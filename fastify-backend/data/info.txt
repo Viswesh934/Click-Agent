@@ -1,0 +1,14 @@
+Project Name: LibreChat + Fastify + LlamaIndex Integration Setup
+Description: This project connects LibreChat as a beautiful, chat-based frontend interface to a custom-built Fastify backend. The Fastify backend leverages LlamaIndex (TS) to query a local document-based knowledge base and answer user questions in an OpenAI-compatible format.
+Fastify Port: 5001
+LibreChat Port: 3080
+LlamaIndex Version: v0.8.x (TypeScript)
+Author: Antigravity Code Assistant
+Features:
+- Custom endpoints support in LibreChat pointing to the Fastify backend.
+- Fastify server serving an OpenAI-compatible chat completions API endpoint (POST /v1/chat/completions).
+- Vector storage and retrieval powered by LlamaIndex's VectorStoreIndex.
+- Automatic document ingestion from the data/ directory.
+- Support for streaming and non-streaming responses.
+- CORS preflight handling.
+- Environment variable configuration via dotenv.
