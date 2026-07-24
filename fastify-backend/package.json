@@ -7,11 +7,20 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "tsx src/index.ts"
+    "dev": "tsx src/index.ts",
+    "traffic": "tsx src/trafficGenerator.ts"
   },
   "dependencies": {
     "@aws-crypto/sha256-js": "^5.2.0",
+    "@clickhouse/client": "^1.23.1",
     "@fastify/cors": "^10.0.1",
+    "@opentelemetry/auto-instrumentations-node": "^0.79.0",
+    "@opentelemetry/exporter-logs-otlp-http": "^0.221.0",
+    "@opentelemetry/exporter-metrics-otlp-http": "^0.221.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.221.0",
+    "@opentelemetry/resources": "^2.10.0",
+    "@opentelemetry/sdk-node": "^0.221.0",
+    "@opentelemetry/semantic-conventions": "^1.43.0",
     "dotenv": "^16.4.7",
     "fastify": "^5.2.1",
     "llamaindex": "^0.8.27"
