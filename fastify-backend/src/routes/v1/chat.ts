@@ -30,18 +30,21 @@ export default async function chatRoutes(fastify: FastifyInstance) {
       return { error: "No user query found in messages history." };
     }
 
-    return sendMockResponse(reply, "hi mf", stream, model);
-
     try {
       const index = getIndex();
       if (!index) {
-        return sendMockResponse(reply, "LlamaIndex is not initialized.", stream, model);
+        return sendMockResponse(
+          reply,
+          "LlamaIndex is not initialized. Please set DEEPSEEK_API_KEY environment variable in your .env file.",
+          stream,
+          model || "deepseek-chat"
+        );
       }
 
       const queryEngine = (index as VectorStoreIndex).asQueryEngine();
 
       if (stream) {
-        console.log(`Streaming query: "${queryText}"`);
+        console.log(`Streaming query with DeepSeek: "${queryText}"`);
         const responseStream = await queryEngine.query({ query: queryText, stream: true });
 
         reply.raw.writeHead(200, {
@@ -59,7 +62,7 @@ export default async function chatRoutes(fastify: FastifyInstance) {
             id: chunkId,
             object: "chat.completion.chunk",
             created: Math.floor(Date.now() / 1000),
-            model: model || "llamaindex-fastify",
+            model: model || "deepseek-chat",
             choices: [
               {
                 index: 0,
@@ -76,7 +79,7 @@ export default async function chatRoutes(fastify: FastifyInstance) {
           id: chunkId,
           object: "chat.completion.chunk",
           created: Math.floor(Date.now() / 1000),
-          model: model || "llamaindex-fastify",
+          model: model || "deepseek-chat",
           choices: [
             {
               index: 0,
@@ -89,14 +92,14 @@ export default async function chatRoutes(fastify: FastifyInstance) {
         reply.raw.write("data: [DONE]\n\n");
         reply.raw.end();
       } else {
-        console.log(`Standard query: "${queryText}"`);
+        console.log(`Standard query with DeepSeek: "${queryText}"`);
         const result = await queryEngine.query({ query: queryText });
 
         return {
           id: `chatcmpl-${Date.now()}`,
           object: "chat.completion",
           created: Math.floor(Date.now() / 1000),
-          model: model || "llamaindex-fastify",
+          model: model || "deepseek-chat",
           choices: [
             {
               index: 0,
@@ -110,9 +113,9 @@ export default async function chatRoutes(fastify: FastifyInstance) {
         };
       }
     } catch (err: any) {
-      console.error("LlamaIndex query execution failed:", err);
-      const errorMsg = `Error executing LlamaIndex query: ${err.message || err}`;
-      return sendMockResponse(reply, errorMsg, stream, model);
+      console.error("LlamaIndex DeepSeek query execution failed:", err);
+      const errorMsg = `Error executing DeepSeek query: ${err.message || err}`;
+      return sendMockResponse(reply, errorMsg, stream, model || "deepseek-chat");
     }
   });
 }

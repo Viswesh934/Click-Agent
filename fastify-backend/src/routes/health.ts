@@ -15,7 +15,7 @@ export default async function healthRoutes(fastify: FastifyInstance) {
     return {
       status: "ok",
       llamaindex: isIndexInitialized() ? "initialized" : "not_initialized",
-      hasApiKey: !!process.env.OPENAI_API_KEY,
+      hasApiKey: !!process.env.DEEPSEEK_API_KEY || !!process.env.OPENAI_API_KEY,
     };
   });
 
